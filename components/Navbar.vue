@@ -33,7 +33,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import logo from '/logo.svg'
+
+/* 
+  todo: import svg logo
+ */
+//import logo from '../static/logo.svg'
 export default Vue.extend({
   name: 'Navbar',
 })

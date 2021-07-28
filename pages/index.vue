@@ -35,7 +35,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Navbar from '../components/Navbar.vue'
-import { Context } from '@nuxt/types'
 
 export default Vue.extend({
   data() {
@@ -57,6 +56,9 @@ export default Vue.extend({
     return {
       products,
     }
+  },
+  mounted() {
+    this.$store.commit('loadProducts', this.products)
   },
 })
 </script>
