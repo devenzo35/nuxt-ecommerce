@@ -1,28 +1,22 @@
 <template>
   <nav
     class="
-      bg-gray-800
+      bg-gray-200
       w-full
-      h-20
+      h-13
       flex
       justify-between
       items-center
-      p-1
-      px-7
-      text-white
+      p-3
+      text-sm
     "
   >
-    <!-- logo section and menu section navbar -->
-    <div class="w-full h-auto">
-      <img
-        src="https://cdn.vuestorefront.io/static/images/logo.png"
-        class="w-full h-auto"
-        alt="Vue Storefront"
-      />
-    </div>
+    <NuxtLink to="/" class="w-full h-auto">
+      <img src="~assets/logo.svg" alt="brand logo" />
+    </NuxtLink>
     <div class="flex list-none gap-7">
-      <li>Home</li>
-      <li>Cart</li>
+      <NuxtLink to="/">Home</NuxtLink>
+      <NuxtLink to="/cart">Cart</NuxtLink>
     </div>
 
     <!-- <div class="ml-5 text-lg text-white">

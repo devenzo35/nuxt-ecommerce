@@ -1,8 +1,6 @@
 <template>
   <div>
-    <Navbar />
-
-    <ul class="flex justify-evenly gap-10 px-6 mt-10">
+    <ul class="flex flex-col justify-evenly items-center gap-5 mt-10 mb-8">
       <figure
         :key="product.id"
         v-for="product in products"
@@ -11,10 +9,11 @@
           border
           rounded-sm
           p-3
-          w-2/5
+          w-5/6
           h-68
           shadow-md
-          hover:bg-blue-300
+          bg-white
+          lg:hover:bg-blue-300
           cursor-pointer
           flex flex-col
           justify-between
@@ -26,24 +25,18 @@
           class="w-full h-4/5"
         />
         <h2>{{ product.name }}</h2>
-        <span>price: {{ product.price }} stock: {{ product.stock }}</span>
+        <span class="text-sm">price: ${{ product.price }}</span>
       </figure>
     </ul>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import Navbar from '../components/Navbar.vue'
-
-export default Vue.extend({
+<script>
+export default {
   data() {
     return {
       product: Object,
     }
-  },
-  components: {
-    Navbar,
   },
   methods: {
     async goToProduct(product) {
@@ -52,13 +45,12 @@ export default Vue.extend({
   },
   async asyncData({ $strapi }) {
     const products = await $strapi.$products.find()
-
     return {
       products,
     }
   },
   mounted() {
-    this.$store.commit('loadProducts', this.products)
+    this.$store.commit('products/loadProducts', this.products)
   },
-})
+}
 </script>

@@ -1,30 +1,94 @@
 <template>
-  <div class="bg-gray-100 border w-4/6 h-96 flex flex-col p-3 m-auto mt-16">
-    <div class="bg-white border h-4/6 flex justify-center mx-auto py-5">
-      <img :src="product.image[0].name" alt="product image" />
+  <div
+    class="
+      bg-gray-300
+      border
+      w-5/6
+      flex flex-col
+      justify-start
+      p-3
+      m-auto
+      mt-11
+      shadow-md
+    "
+  >
+    <div class="border w-full h-min">
+      <div class="aspect-w-16 aspect-h-9">
+        <img
+          :src="product.image[0].name"
+          alt="product image"
+          class="object-cover"
+        />
+      </div>
     </div>
-    <h1 class="text-4xl font-bold my-8">{{ product.name }}</h1>
-    <figcaption class="flex justify-between text-3xl">
-      <span>${{ product.price }}</span>
-      <span> stock: {{ product.stock }}</span>
-    </figcaption>
+    <section class="flex flex-col gap-6 justify-between">
+      <h1 class="text-2xl font-bold my-2">{{ product.name }}</h1>
+      <div>
+        <input
+          type="number"
+          name="amount"
+          value="1"
+          class="px-3 w-full rounded-sm text-md"
+          v-model="amount"
+          :min="1"
+          :max="product.stock"
+        />
+        <button
+          @click="addToCart"
+          class="text-sm bg-yellow-600 p-1 rounded-md mx-auto"
+        >
+          Add to cart
+        </button>
+      </div>
+      <figcaption class="flex items-center justify-between text-2xl">
+        <span>${{ price }}</span>
+        <span class="bg-red-300 p-1 rounded-sm">
+          stock: {{ product.stock }}</span
+        >
+      </figcaption>
+    </section>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+<script>
+export default {
+  data() {
+    return {
+      amount: 1,
+      price: 0,
+    }
+  },
   async asyncData({ $strapi, route }) {
     const id = route.params.id
-    console.log(id)
 
     const product = await $strapi.$products.findOne(id)
-
-    console.log(product)
 
     return {
       product,
     }
   },
-})
+  mounted() {
+    return (this.price = this.product.price)
+  },
+  methods: {
+    async addToCart() {
+      await this.$strapi.create('carts', {
+        name: this.product.name,
+        price: this.price,
+        image: this.product.image,
+        amount: this.product.amount,
+      })
+    },
+  },
+  watch: {
+    amount: function (e) {
+      if (e === '') {
+        this.product.amount = 1
+        return (this.price = this.product.price)
+      }
+      this.product.amount = e
+      this.price = e * this.product.price
+    },
+  },
+}
 </script>

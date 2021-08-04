@@ -2,47 +2,46 @@
   <div class="grid place-items-center min-h-screen">
     <form
       @submit="loginUser"
-      class="grid place-items-center w-3/6 h-3/6 border"
+      class="grid place-items-center w-5/6 h h-3/6 border"
     >
       <h1>Sign up to buy all the things you always wish</h1>
-      <p v-if="$strapi.user">Logged in</p>
       <input
         v-model="username"
         type="text"
         name="username"
-        class="w-4/6 h-10 border-2 rounded-sm p-1"
+        class="w-5/6 h h-10 border-2 rounded-sm p-1"
         placeholder="username"
       />
       <input
         v-model="password"
         type="password"
         name="password"
-        class="w-4/6 h-10 border-2 rounded-sm p-1"
+        class="w-5/6 h h-10 border-2 rounded-sm p-1"
         placeholder="password"
       />
       <button
         type="submit"
-        class="bg-green-600 w-2/6 h-10 rounded-md text-white font-bold"
+        class="bg-green-600 w-5/6 h-10 rounded-md text-white font-bold"
       >
         Start buying
       </button>
     </form>
+    <button
+      @click="forgotPassword"
+      class="bg-red-600 w-5/6 h-10 rounded-md text-white font-bold"
+    >
+      Forgot password?
+    </button>
   </div>
 </template>
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
-export default Vue.extend({
-  name: 'login',
+export default {
   data() {
     return {
       username: '',
       password: '',
     }
-  },
-  computed: {
-    user() {
-      return this.$strapi.user
-    },
   },
   methods: {
     async loginUser(e) {
@@ -54,14 +53,23 @@ export default Vue.extend({
           password: this.password,
         })
 
-        if (user !== null) {
-          this.$router.push('/')
+        if (user) {
+          this.$nuxt.$router.push('/')
         }
       } catch (err) {
         console.log(err)
       }
     },
+    async forgotPassword() {
+      console.log('hellooo')
+      try {
+        const reset = await this.$strapi.forgotPassword({email:'enzocuellar12@gmail.com'})
+        console.log('reset')
+    }catch(err){
+      console.log(err)
+    }
   },
-})
+  }
+}
 </script>
 <style lang=""></style>
